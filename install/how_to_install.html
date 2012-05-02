@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How to install &mdash; FoOlFuuka 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-install">
+<h1>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h1>
+<p>Installing FoOlFuuka doesn’t require science, only a properly configured
+server.</p>
+<p>To configure the server, head to the index page of this wiki where you
+can find the point-by-point instructions on how to install the necessary
+software.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>Hardware</p>
+<ul class="simple">
+<li>A VPS or Dedicated Server with command line access</li>
+<li>At least 382MB RAM for a small installation (512MB+ suggested)</li>
+<li>Multicore suggested</li>
+<li>64bit suggested</li>
+<li>A few gigabytes of space, for the images</li>
+</ul>
+<p>Software</p>
+<ul class="simple">
+<li>An UNIX-like operating system (Debian 6 64bit suggested)</li>
+<li>PHP 5.3+ (5.4.1+ suggested)</li>
+<li>MySQL 5.1+ (5.5+ suggested)</li>
+<li>Nginx 0.8+ or Apache 2 (Nginx 1.2+ suggested)</li>
+<li>ImageMagick suggested</li>
+</ul>
+</div>
+<div class="section" id="creating-a-database">
+<h2>Creating a database<a class="headerlink" href="#creating-a-database" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="via-cpanel">
+<h3>Via cPanel<a class="headerlink" href="#via-cpanel" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Login to cPanel</li>
+<li>Click on MySQL Database Wizard</li>
+<li>Create your database</li>
+<li>Create your login information for the database and write it down for
+later</li>
+</ul>
+</div>
+<div class="section" id="via-phpmyadmin">
+<h3>Via PhpMyAdmin<a class="headerlink" href="#via-phpmyadmin" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Login to phpMyAdmin</li>
+<li>Click on “Databases” in the top navigation bar</li>
+<li>Create your database with “utf8_general_ci” as your collation and a
+name of your choice</li>
+<li>Click on “Privileges” in the top-right of the page</li>
+<li>Click on “Add a new user”</li>
+<li>Create your login information for the database and write it down for
+later</li>
+<li>Press “Go” at the bottom to create your login information for the
+database</li>
+</ul>
+</div>
+<div class="section" id="via-command-line-not-suggested">
+<h3>Via command line (not suggested)<a class="headerlink" href="#via-command-line-not-suggested" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Enter mysql via command line and enter the MySQL password when asked.
+The user can be <tt class="docutils literal"><span class="pre">root</span></tt>or any user with a MySQL account with
+administrative privileges.</p>
+<div class="highlight-python"><pre>$ mysql -u root -p</pre>
+</div>
+</li>
+<li><p class="first">Create the database with whatever name you want, possibly a simple
+alphabetic lowercase name.</p>
+<div class="highlight-python"><pre>mysql&gt; CREATE DATABASE foolfuuka;</pre>
+</div>
+</li>
+<li><p class="first">Create an user and password for the database created. It’s good
+practice to give it the same name as the database.</p>
+<div class="highlight-python"><pre>mysql&gt; GRANT usage ON *.* to foolfuuka@localhost identified by 'xxxpasswordxxx';
+mysql&gt; GRANT all privileges ON foolfuuka.* to foolfuuka@localhost;</pre>
+</div>
+</li>
+<li><p class="first">You’re done, close the MySQL connection.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mysql</span><span class="o">&gt;</span> <span class="nb">exit</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Reach your server’s public folder</p>
+<div class="highlight-python"><pre>$ cd /var/www</pre>
+</div>
+</li>
+<li><p class="first">Download the latest FoOlFuuka via command line. Grab the latest
+version from the <a class="reference external" href="https://github.com/FoOlRulez/FoOlFuuka/tags">TAGS page</a> without a “-dev” in front of the
+version number.</p>
+<div class="highlight-python"><pre>$ wget https://github.com/FoOlRulez/FoOlFuuka/zipball/0.7.0-dev-2 -O foolfuuka.zip</pre>
+</div>
+</li>
+<li><p class="first">UnZip and change the name of the created folder</p>
+<div class="highlight-python"><pre>$ unzip foolfuuka.zip
+$ ls # search the generated folder in case the unzip didn't show the output making it obvious
+$ mv FoOlRulez-FoOlFuuka-xxxxxxx/ foolfuuka/ # you can choose whichever name you want</pre>
+</div>
+</li>
+<li><p class="first">If you are on an Nginx server, check the page on how to <a class="reference external" href="Nginx-configuration">setup the
+Nginx configuration</a>.</p>
+</li>
+<li><p class="first">Open your browser, and reach the folder where you installed
+FoOlFuuka, like <tt class="docutils literal"><span class="pre">http://yourdoma.in/foolfuuka</span></tt></p>
+</li>
+<li><p class="first">If this page works, go ahead onto
+<tt class="docutils literal"><span class="pre">http://yourdoma.in/foolfuuka/install</span></tt>, else head to
+<a class="reference external" href="Troubleshooting-installation">Troubleshooting installation</a></p>
+</li>
+<li><p class="first">If this page works, follow the instructions on screen, else head to
+<a class="reference external" href="Troubleshooting-installation">Troubleshooting installation</a></p>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to install</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#creating-a-database">Creating a database</a><ul>
+<li><a class="reference internal" href="#via-cpanel">Via cPanel</a></li>
+<li><a class="reference internal" href="#via-phpmyadmin">Via PhpMyAdmin</a></li>
+<li><a class="reference internal" href="#via-command-line-not-suggested">Via command line (not suggested)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installing">Installing</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/install/how_to_install.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, FoOlRulez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

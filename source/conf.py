@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # FoOlFuuka documentation build configuration file, created by
-# sphinx-quickstart on Wed May  2 18:03:39 2012.
+# sphinx-quickstart on Wed May  2 19:34:04 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #

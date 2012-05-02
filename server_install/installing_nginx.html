@@ -1,0 +1,140 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing Nginx &mdash; FoOlFuuka 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" />
+    <link rel="next" title="Configuring Nginx" href="configuring_nginx.html" />
+    <link rel="prev" title="Installing APC" href="installing_apc.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="configuring_nginx.html" title="Configuring Nginx"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installing_apc.html" title="Installing APC"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installing-nginx">
+<h1>Installing Nginx<a class="headerlink" href="#installing-nginx" title="Permalink to this headline">¶</a></h1>
+<p>We will just use the Nginx official repository. Nginx updates really
+frequently and it would be a pain to It includes tons of modules except
+the TCP/IP one that will be needed in the future if you want to support
+truly real time threads. For now, don’t bother with it.</p>
+<p>This is basically what’s written at <a class="reference external" href="http://wiki.nginx.org/Install">http://wiki.nginx.org/Install</a></p>
+<p>Add the new repositories to the sources.list file</p>
+<div class="highlight-python"><pre>$ nano /etc/apt/sources.list # you can use your SFTP client</pre>
+</div>
+<p>Add two lines:</p>
+<div class="highlight-python"><pre>deb http://nginx.org/packages/ubuntu/ lucid nginx
+deb-src http://nginx.org/packages/ubuntu/ lucid nginx</pre>
+</div>
+<p>Now we need to add the Nginx GPG keys to validate the repository not to
+have warnings showing when using <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">update</span></tt>:</p>
+<div class="highlight-python"><pre>$ gpg --recv-key 7BD9BF62
+$ gpg -a --export 7BD9BF62 | sudo apt-key add -</pre>
+</div>
+<p>To end it, install Nginx by first updating from the repository sources
+and then install Nginx.</p>
+<div class="highlight-python"><pre>$ apt-get update
+$ apt-get install nginx</pre>
+</div>
+<p>It might ask you to create <tt class="docutils literal"><span class="pre">/etc/init.d/nginx</span></tt>, and you should allow.</p>
+<p>Unless it already started, you can run Nginx:</p>
+<div class="highlight-python"><pre>$ /etc/init.d/nginx start [stop|restart]</pre>
+</div>
+<p>Now, this is not enough and hardly anything will work with Nginx. You
+need to <a class="reference external" href="Nginx-configuration">configure Nginx</a>.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installing_apc.html"
+                        title="previous chapter">Installing APC</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configuring_nginx.html"
+                        title="next chapter">Configuring Nginx</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/server_install/installing_nginx.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="configuring_nginx.html" title="Configuring Nginx"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installing_apc.html" title="Installing APC"
+             >previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, FoOlRulez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

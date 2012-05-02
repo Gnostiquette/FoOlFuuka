@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using Percona Server instead of MySQL &mdash; FoOlFuuka 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="using-percona-server-instead-of-mysql">
+<h1>Using Percona Server instead of MySQL<a class="headerlink" href="#using-percona-server-instead-of-mysql" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.percona.com/software/percona-server/">Percona Server</a> is a drop-in replacement for MySQL, more precisely, a
+modified MySQL Community Server.</p>
+<p>We prefer Percona Server because it provides us more statistics and
+faster schema changes. Without much benchmarking, I could say it’s a bit
+faster overall with InnoDB and it uses a bit less RAM, but it’s still
+MySQL at the core.</p>
+<p>In other words, there’s no good reason to keep using the official MySQL
+Community Server, so let’s install Percona Server.</p>
+<p>This article covers both installation or upgrade from MySQL to Percona.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>sudo if you aren’t running as root (and you shouldn’t!)
+<tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">sudo</span></tt></li>
+<li>wget <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">wget</span></tt></li>
+</ul>
+</div>
+<div class="section" id="get-percona-server-binaries">
+<h2>Get Percona Server binaries<a class="headerlink" href="#get-percona-server-binaries" title="Permalink to this headline">¶</a></h2>
+<p>Go to the <a href="#id1"><span class="problematic" id="id2">`Percona Server downloads page for the latest version`_</span></a>, go
+for <tt class="docutils literal"><span class="pre">binary</span> <span class="pre">»</span> <span class="pre">linux</span></tt> and choose <tt class="docutils literal"><span class="pre">x86_64</span></tt> if your OS is 64bit (I hope
+it is).</p>
+<p>Then, use your server to download it and extract it:</p>
+<div class="highlight-python"><pre>$ cd /opt
+$ wget http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.22-25.2/binary/linux/x86_64/Percona-Server-5.x.xx-relxx.x-xxx.Linux.xxxx.tar.gz
+$ tar xvzf Percona-Server-5.x.xx-relxx.x-xxx.Linux.xxxx.tar.gz</pre>
+</div>
+<p>Now you have the binaries ready for use.</p>
+</div>
+<div class="section" id="fresh-installation">
+<h2>Fresh installation<a class="headerlink" href="#fresh-installation" title="Permalink to this headline">¶</a></h2>
+<p>If you don’t have a MySQL Server, you need to install it and create the
+first databases. The process is identical to the one of installing
+MySQL, and in fact we won’t use “Percona” anywhere, to keep
+compatibility.</p>
+<p><em>This is partly copied from the `MySQL 5.5 binary installation guide`_</em>,
+but we’ve made a few changes for your convenience. Don’t copy the hashes
+and what comes after them, those are only comments.</p>
+<div class="highlight-python"><pre>$ cd /opt
+$ mkdir /home/mysql # we like to give mysql a folder in /home, since often it's on a larger HDD
+$ groupadd mysql
+$ useradd -r -g mysql mysql
+$ cp Percona-Server-5.x.xx-relxx.x-xxx.Linux.xxxx /home/mysql/mysql
+$ cd /home/mysql/mysql
+$ chown -R mysql .
+$ chgrp -R mysql .
+$ scripts/mysql_install_db --user=mysql --basedir=/home/mysql/mysql --datadir=/home/mysql/mysql/data
+$ chown -R root .
+$ chown -R mysql data
+$ cp support-files/my-medium.cnf /etc/my.cnf # medium is fine, you will have to blow this out or proportion anyway
+$ cp support-files/mysql.server /etc/init.d/mysql</pre>
+</div>
+<p>And this should be it. Start/stop/restart like this:</p>
+<div class="highlight-python"><pre>$ /etc/init.d/mysql start [stop|restart]</pre>
+</div>
+<p>To autostart it on boot:</p>
+<div class="highlight-python"><pre>$ update-rc.d mysql defaults</pre>
+</div>
+<p>You should be done installing Percona Server.</p>
+</div>
+<div class="section" id="replacing-mysql-with-percona">
+<h2>Replacing MySQL with Percona<a class="headerlink" href="#replacing-mysql-with-percona" title="Permalink to this headline">¶</a></h2>
+<p>Stop MySQL. Should be a command like this</p>
+<div class="highlight-python"><pre>$ /etc/init.d/mysql stop # maybe /etc/init.d/mysql.server stop</pre>
+</div>
+<p>After this is done (can take minutes, be patient!), move your MySQL data
+folder out of the MySQL folder. I am using example folders, switch them
+with the appropriate folders.</p>
+<div class="highlight-python"><pre>$ mv /home/mysql/mysql/data /home/mysql/data # just move it outside</pre>
+</div>
+<p>Then change the MySQL folder name instead of removing it, for safety.</p>
+<div class="highlight-python"><pre>$ mv /home/mysql/mysql /home/mysql/mysql_original</pre>
+</div>
+<p>Let’s move Percona where MySQL belonged.</p>
+<div class="highlight-python"><pre>$ mv /opt/Percona-Server-5.x.xx-relxx.x-xxx.Linux.xxxx /home/mysql/mysql</pre>
+</div>
+<p>Move the data folder back.</p>
+<div class="highlight-python"><pre>$ mv /home/mysql/data /home/mysql/mysql/data</pre>
+</div>
+<p>And restart MySQL (that now will be Percona Server!)</p>
+<div class="highlight-python"><pre>$ /etc/init.d/mysql start # maybe /etc/init.d/mysql.server start</pre>
+</div>
+<p>And this is it, you’re now using Percona Server.</p>
+<p>version: <a class="reference external" href="http://www.percona.com/downloads/Percona-Server-5.5/LATEST/">http://www.percona.com/downloads/Percona-Server-5.5/LATEST/</a>
+.. _MySQL 5.5 binary installation
+guide: <a class="reference external" href="http://dev.mysql.com/doc/refman/5.5/en/binary-installation.html">http://dev.mysql.com/doc/refman/5.5/en/binary-installation.html</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using Percona Server instead of MySQL</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#get-percona-server-binaries">Get Percona Server binaries</a></li>
+<li><a class="reference internal" href="#fresh-installation">Fresh installation</a></li>
+<li><a class="reference internal" href="#replacing-mysql-with-percona">Replacing MySQL with Percona</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/server_install/installing_percona.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, FoOlRulez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

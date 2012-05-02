@@ -1,0 +1,119 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing the minimal &mdash; FoOlFuuka 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installing-the-minimal">
+<h1>Installing the minimal<a class="headerlink" href="#installing-the-minimal" title="Permalink to this headline">¶</a></h1>
+<p>So, you’ve logged in your new server for the first time?</p>
+<p>For sure you’re running as <tt class="docutils literal"><span class="pre">root</span></tt>, and that’s good enough for now.</p>
+<p>Let’s fire a few commands to update the server’s software to the latest
+versions.</p>
+<div class="highlight-python"><pre>$ apt-get update
+$ apt-get upgrade</pre>
+</div>
+<p>Let’s get rid of Apache if it’s installed. Some servers have it
+installed for some obscure reason.</p>
+<div class="highlight-python"><pre>$ apt-get remove apache apache2</pre>
+</div>
+<p>We have many servers, so we use to change the hostname to the name of
+our favorite <a class="reference external" href="http://en.wikipedia.org/wiki/Touhou_Project">2hu</a> so we can just use a name to distinguish them. You
+might change it too to give a cool name to the server:</p>
+<div class="highlight-python"><pre>$ hostname hakurei # or any name you want</pre>
+</div>
+<p>I suggest restarting the server after changing the hostname, or some
+application might have issues.</p>
+<div class="highlight-python"><pre>$ reboot</pre>
+</div>
+<p>And wait few seconds to login into the server again. Now the command
+line should display <tt class="docutils literal"><span class="pre">root&#64;hakurei</span></tt>.</p>
+<p>Now, install some basic software. This will install a lot of
+dependencies necessary to the rest of the installation.</p>
+<div class="highlight-python"><pre>$ apt-get install build-essential sudo libpcre3-dev libssl-de imagemagick graphicsmagick</pre>
+</div>
+<p>This is all for the basic installation.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/server_install/installing_the_minimal.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, FoOlRulez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
