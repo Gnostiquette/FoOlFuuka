@@ -1,0 +1,171 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configure PHP-FPM &mdash; FoOlFuuka 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" />
+    <link rel="next" title="Installing APC" href="installing_apc.html" />
+    <link rel="prev" title="A good PHP compilation" href="installing_php.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installing_apc.html" title="Installing APC"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installing_php.html" title="A good PHP compilation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="configure-php-fpm">
+<h1>Configure PHP-FPM<a class="headerlink" href="#configure-php-fpm" title="Permalink to this headline">¶</a></h1>
+<p>If you followed the compilation guide, you now have PHP with FPM. That’s
+wonderful, you’re going to take on a the traffic you probably didn’t
+know your server could take.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>PHP-FPM installed</li>
+<li>nano if you use command line <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">nano</span></tt></li>
+<li>htop to monitor your PHP resource usage <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">htop</span></tt></li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Let’s configure it. I will use command line controls, but if you’re
+savvy, just use your SFTP client.</p>
+<div class="highlight-python"><pre>$ nano /usr/local/lib/php.ini</pre>
+</div>
+<p>(<tt class="docutils literal"><span class="pre">CTRL+W</span></tt> to find words in <tt class="docutils literal"><span class="pre">nano</span></tt>, <tt class="docutils literal"><span class="pre">CTRL+O</span></tt> to save, <tt class="docutils literal"><span class="pre">CTRL+X</span></tt> to
+exit)</p>
+<p>Change the following (you can go higher than this for some values):</p>
+<div class="highlight-python"><pre>max_execution_time = 120
+memory_limit = 256M # 128M for a 512MB RAM server
+date.timezone = America/New_York # or wherever your server is from this list http://php.net/manual/en/timezones.php</pre>
+</div>
+<p>When you’re done (you can have fun looking at all the other variables)
+save and close the file. Now open the FPM configuration file, which is
+important to push on the performance:</p>
+<div class="highlight-python"><pre>$ nano /usr/local/etc/php-fpm.conf</pre>
+</div>
+<p>I can’t give specific values to assign, as it depends on the server size
+and on how many resources should PHP use. Remember that these are just
+limits, so even if misconfigured, nothing will blow up as long as you
+don’t get a spike of visits. These are values we use on a 16GB RAM
+server.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pm</span> <span class="o">=</span> <span class="n">dynamic</span> <span class="c"># else the rest won&#39;t work</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">max_children</span> <span class="o">=</span> <span class="mi">100</span> <span class="c"># &lt; 20 on 512mb RAM</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">start_servers</span> <span class="o">=</span> <span class="mi">30</span> <span class="c"># &lt; 10 digit on 512mb RAM</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">min_spare_servers</span> <span class="o">=</span> <span class="mi">30</span> <span class="c"># &lt; 10 on 512mb RAM</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">max_spare_servers</span> <span class="o">=</span> <span class="mi">100</span> <span class="c"># &lt; 20 on 512mb RAM</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">max_requests</span> <span class="o">=</span> <span class="mi">250</span> <span class="c"># respawns the thread to avoid lockups, low is fine</span>
+</pre></div>
+</div>
+<p>Save and close. Now restart PHP:</p>
+<div class="highlight-python"><pre>$ /etc/init.d/php-fpm restart</pre>
+</div>
+<p>You can see your PHP resource usage with</p>
+<div class="highlight-python"><pre>$ htop</pre>
+</div>
+<p>Press F5 to group the threads. Yes, PHP will have quite a few of them.</p>
+<p>Let’s give PHP the last blow of speed: <a class="reference external" href="Install-APC">Install APC</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configure PHP-FPM</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installing_php.html"
+                        title="previous chapter">A good PHP compilation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installing_apc.html"
+                        title="next chapter">Installing APC</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/server_install/configuring_php.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installing_apc.html" title="Installing APC"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installing_php.html" title="A good PHP compilation"
+             >previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, FoOlRulez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>A good PHP compilation &mdash; FoOlFuuka 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" />
+    <link rel="next" title="Configure PHP-FPM" href="configuring_php.html" />
+    <link rel="prev" title="Installing Percona Server instead of MySQL" href="installing_percona.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="configuring_php.html" title="Configure PHP-FPM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installing_percona.html" title="Installing Percona Server instead of MySQL"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="a-good-php-compilation">
+<h1>A good PHP compilation<a class="headerlink" href="#a-good-php-compilation" title="Permalink to this headline">¶</a></h1>
+<p>Installing PHP is an easy task, but you will want the most out of it.
+That’s why you want a custom compilation!</p>
+<p>Here’s a guide on how to install PHP so you know you will be able to
+support all of the FoOlFuuka sweetness. More importantly, this installs
+PHP-FPM, that will automatically manage its resources against the
+incoming traffic.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>MySQL 5+ installed</li>
+<li>sudo if you’re not running as root (and you shouldn’t!)
+<tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">sudo</span></tt></li>
+<li>wget <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">wget</span></tt></li>
+</ul>
+</div>
+<div class="section" id="get-rid-of-repository-php">
+<h2>Get rid of repository PHP<a class="headerlink" href="#get-rid-of-repository-php" title="Permalink to this headline">¶</a></h2>
+<p>If you have PHP from the Debian repo, get rid of it. The following
+should do a pretty good job, but don’t trust me with it, because the
+possibilities are unlimited:</p>
+<div class="highlight-python"><pre>$ /etc/init.d/php5 stop
+$ apt-get remove php5 php5-commons</pre>
+</div>
+<p>If this is not enough, document yourself on how to get rid of it for
+your own case.</p>
+</div>
+<div class="section" id="download-compile-and-install-php">
+<h2>Download, compile and install PHP<a class="headerlink" href="#download-compile-and-install-php" title="Permalink to this headline">¶</a></h2>
+<p>Now, download the latest version of PHP. Go the PHP downloads page and
+grab the “Current Stable” version. Click on the download link to reach
+the download page. Copy one of the download links, and use it like this:</p>
+<div class="highlight-python"><pre>$ cd /opt
+$ wget http://xx.php.net/get/php-5.x.xx.tar.gz/from/this/mirror -O php-5.x.xx.tar.gz</pre>
+</div>
+<p>For your convenience, fill up the remaining <tt class="docutils literal"><span class="pre">x</span></tt> with the version
+number. Then, extract it:</p>
+<div class="highlight-python"><pre>$ tar xvzf php-5.x.xx.tar.gz
+$ cd php-5.x.xx/</pre>
+</div>
+<p>Let the magic, and the stress, begin. You <em>will</em> get errors during this
+phase, and you just have to install whatever it asks for with
+<tt class="docutils literal"><span class="pre">apt-get</span></tt>. You <em>must</em> have MySQL installed at this point.</p>
+<p>A few requirements on top of my head so you don’t have to try too many
+times:</p>
+<div class="highlight-python"><pre>$ apt-get install build-essentials openssl libcurl4-openssl-dev sqlite3 libsqlite3-dev libxml2 libxml2-dev zlib1g-dev bzip2 zip unzip libjpeg-dev libpng-dev</pre>
+</div>
+<p>Now, let’s try configuring it. See the MySQL folders? Adapt them to
+where you installed MySQL</p>
+<div class="highlight-python"><pre>$ ./configure --with-mysql=/home/mysql/mysql  \
+    --with-pdo-mysql=/home/mysql/mysql/bin/mysql_config \
+    --with-mysqli=/home/mysql/mysql/bin/mysql_config \
+    --enable-zip --enable-sockets --enable-fpm  --with-gettext \
+    --with-gd --enable-ftp --enable-exif --with-curl --with-bz2 \
+    --with-openssl --with-mcrypt --enable-mbstring --with-jpeg-dir \
+    --with-png-dir --with-zlib --enable-bcmath</pre>
+</div>
+<p>With enough luck, with little effort you will have PHP configured. Let’s
+compile it!</p>
+<div class="highlight-python"><pre>$ make
+$ make install</pre>
+</div>
+<p>If everything has gone right, you have installed PHP. To run it, you
+need the init.d script that ships with PHP itself.</p>
+<div class="highlight-python"><pre>$ cp sapi/fpm/init.d.php-fpm.in /etc/init.d/php-fpm
+$ chmod 755 /etc/init.d/php-fpm</pre>
+</div>
+<p>Now, start, stop or restart PHP like this</p>
+<div class="highlight-python"><pre>$ /etc/init.d/php-fpm start [stop|restart]</pre>
+</div>
+<p>You can have it starting on boot with:</p>
+<div class="highlight-python"><pre>$ update-rc.d php-fpm defaults</pre>
+</div>
+<div class="section" id="were-not-done-yet">
+<h3>We’re not done yet!<a class="headerlink" href="#were-not-done-yet" title="Permalink to this headline">¶</a></h3>
+<p>You still have to configure PHP (at least a bit!) and install APC.
+First, let’s <a class="reference external" href="Configure-PHP-FPM">configure it</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">A good PHP compilation</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#get-rid-of-repository-php">Get rid of repository PHP</a></li>
+<li><a class="reference internal" href="#download-compile-and-install-php">Download, compile and install PHP</a><ul>
+<li><a class="reference internal" href="#were-not-done-yet">We’re not done yet!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installing_percona.html"
+                        title="previous chapter">Installing Percona Server instead of MySQL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configuring_php.html"
+                        title="next chapter">Configure PHP-FPM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/server_install/installing_php.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="configuring_php.html" title="Configure PHP-FPM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installing_percona.html" title="Installing Percona Server instead of MySQL"
+             >previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, FoOlRulez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

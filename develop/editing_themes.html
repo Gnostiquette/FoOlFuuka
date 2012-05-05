@@ -1,0 +1,161 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Editing the themes without messing up &mdash; FoOlFuuka 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" />
+    <link rel="prev" title="Installing Java Virtual Machine" href="../server_install/installing_java.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../server_install/installing_java.html" title="Installing Java Virtual Machine"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="editing-the-themes-without-messing-up">
+<h1>Editing the themes without messing up<a class="headerlink" href="#editing-the-themes-without-messing-up" title="Permalink to this headline">¶</a></h1>
+<p>While making an entire is not a difficult task, it is difficult to keep up with the FoOlFuuka upgrades that might break your original theme.</p>
+<p>Because of the rather heavy code changes that the themes go through over time, we&#8217;ve implemented a child theme system, in order to allow you to edit only smaller parts of the pre-installed themes. If you&#8217;re PHP-savvy you can also implement new interfaces through the theme controller.</p>
+<div class="section" id="what-is-a-child-theme">
+<h2>What is a child theme?<a class="headerlink" href="#what-is-a-child-theme" title="Permalink to this headline">¶</a></h2>
+<p>The single pages of a theme are called &#8220;views&#8221;, and each of them is a single file, like <tt class="docutils literal"><span class="pre">index.php</span></tt> or <tt class="docutils literal"><span class="pre">board.php</span></tt>. Child themes allow you to override views from other themes</p>
+<p>You can also just override CSS by adding a style.css file.</p>
+</div>
+<div class="section" id="what-may-break-after-an-upgrade">
+<h2>What may break after an upgrade<a class="headerlink" href="#what-may-break-after-an-upgrade" title="Permalink to this headline">¶</a></h2>
+<p>Don&#8217;t trust the stability of the themes and of the child theme system. We will push forward on the theme system and you will have to adapt your child theme accordingly.</p>
+<ul>
+<li><p class="first">Changing filenames</p>
+<p>The pre-installed themes may change the default name of a file. If your override stops working, check if the filename of the original file has been changed.</p>
+</li>
+<li><p class="first">Changing functions</p>
+<p>Especially in the most complex views, it is likely that we&#8217;ll drop support for some functions. Occasionally you will have to keep up with the changes in order to keep having an updated theme.</p>
+</li>
+<li><p class="first">Config file changes</p>
+<p>The config files are mostly stable, but we might add override variables or change their name.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don&#8217;t make database calls in your theme, and don&#8217;t do anything that may put security at stake. A theme is about displaying data, so don&#8217;t add functions for data modification. If you need data modification, consider making a plugin instead.</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Create a new folder for your theme. At the very least you need a folder and the configuration file into it:</p>
+<div class="highlight-python"><pre>/content/themes/yourtheme/
+/content/themes/yourtheme/theme_config.php</pre>
+</div>
+<p>You must copy <tt class="docutils literal"><span class="pre">theme_config.php</span></tt> from the theme you are extending. You will find it in example at</p>
+<div class="highlight-python"><pre>/content/themes/default/theme_config.php</pre>
+</div>
+<p>Edit it by following the comments in the file itself.</p>
+<p>You can now go in the admin panel and activate your new theme. Because no other file has been added, it will look exactly like the theme you&#8217;re overriding.</p>
+</div>
+<div class="section" id="how-to-override-a-view">
+<h2>How to override a view<a class="headerlink" href="#how-to-override-a-view" title="Permalink to this headline">¶</a></h2>
+<p>Copy only the view you&#8217;re interested in from the folder of the theme you&#8217;re overriding. In example, if you were going to add an image to the index page:</p>
+<div class="highlight-python"><pre>/content/themes/default/views/index.php &gt; /content/themes/yourtheme/views/index.php</pre>
+</div>
+<p>Then edit the new file as you like, so in example add a cute image below the board list. Your changes will be available as soon as you hit save, just make sure that you have selected your child theme.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Admins can always change the theme they are viewing to the ones that aren&#8217;t available for the public. Visit the <tt class="docutils literal"><span class="pre">/functions/theme/yourtheme</span></tt> page with your browser to enable the new theme.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Editing the themes without messing up</a><ul>
+<li><a class="reference internal" href="#what-is-a-child-theme">What is a child theme?</a></li>
+<li><a class="reference internal" href="#what-may-break-after-an-upgrade">What may break after an upgrade</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#how-to-override-a-view">How to override a view</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../server_install/installing_java.html"
+                        title="previous chapter">Installing Java Virtual Machine</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/develop/editing_themes.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../server_install/installing_java.html" title="Installing Java Virtual Machine"
+             >previous</a> |</li>
+        <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, FoOlRulez.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
