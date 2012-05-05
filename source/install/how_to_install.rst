@@ -1,6 +1,5 @@
-==============
 How to install
-==============
+##############
 
 Installing FoOlFuuka doesn’t require science, only a properly configured
 server.
@@ -60,73 +59,52 @@ Via command line (not suggested)
 ''''''''''''''''''''''''''''''''
 
 -  Enter mysql via command line and enter the MySQL password when asked.
-   The user can be ``root``\ or any user with a MySQL account with
-   administrative privileges.
-
-   ::
+   The user can be ``root`` or any user with a MySQL account with
+   administrative privileges. ::
 
        $ mysql -u root -p
 
 -  Create the database with whatever name you want, possibly a simple
-   alphabetic lowercase name.
-
-   ::
+   alphabetic lowercase name. ::
 
        mysql> CREATE DATABASE foolfuuka;
 
 -  Create an user and password for the database created. It’s good
-   practice to give it the same name as the database.
-
-   ::
+   practice to give it the same name as the database. ::
 
        mysql> GRANT usage ON *.* to foolfuuka@localhost identified by 'xxxpasswordxxx';
        mysql> GRANT all privileges ON foolfuuka.* to foolfuuka@localhost;
 
--  You’re done, close the MySQL connection.
-
-   ::
+-  You’re done, close the MySQL connection. ::
 
        mysql> exit;
 
 Installing
 ~~~~~~~~~~
 
--  Reach your server’s public folder
-
-   ::
+-  Reach your server’s public folder ::
 
        $ cd /var/www
 
 -  Download the latest FoOlFuuka via command line. Grab the latest
-   version from the `TAGS page`_ without a “-dev” in front of the
-   version number.
-
-   ::
+   version from the `TAGS page <https://github.com/FoOlRulez/FoOlFuuka/tags>`_ without a “-dev” in front of the
+   version number. ::
 
        $ wget https://github.com/FoOlRulez/FoOlFuuka/zipball/0.7.0-dev-2 -O foolfuuka.zip
 
--  UnZip and change the name of the created folder
-
-   ::
+-  UnZip and change the name of the created folder ::
 
        $ unzip foolfuuka.zip
        $ ls # search the generated folder in case the unzip didn't show the output making it obvious
        $ mv FoOlRulez-FoOlFuuka-xxxxxxx/ foolfuuka/ # you can choose whichever name you want
 
--  If you are on an Nginx server, check the page on how to `setup the
-   Nginx configuration`_.
+-  If you are on an Nginx server, check the page on how to :doc:`setup the Nginx configuration </server_install/configuring_nginx>`.
 
 -  Open your browser, and reach the folder where you installed
    FoOlFuuka, like ``http://yourdoma.in/foolfuuka``
 
 -  If this page works, go ahead onto
-   ``http://yourdoma.in/foolfuuka/install``, else head to
-   `Troubleshooting installation`_
+   ``http://yourdoma.in/foolfuuka/install``, else head to :doc:`Troubleshooting installation </install/troubleshooting>`
 
--  If this page works, follow the instructions on screen, else head to
-   `Troubleshooting installation`_
-
-.. _TAGS page: https://github.com/FoOlRulez/FoOlFuuka/tags
-.. _setup the Nginx configuration: Nginx-configuration
-.. _Troubleshooting installation: Troubleshooting-installation
+-  If this page works, follow the instructions on screen, else head to :doc:`Troubleshooting installation </install/troubleshooting>`
 

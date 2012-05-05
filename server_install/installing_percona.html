@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -8,9 +7,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using Percona Server instead of MySQL &mdash; FoOlFuuka 0.8.0 documentation</title>
+    <title>Installing Percona Server instead of MySQL &mdash; FoOlFuuka 0.8.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -25,7 +24,9 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" /> 
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" />
+    <link rel="next" title="A good PHP compilation" href="installing_php.html" />
+    <link rel="prev" title="Installing the minimal" href="installing_the_minimal.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,6 +35,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installing_php.html" title="A good PHP compilation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installing_the_minimal.html" title="Installing the minimal"
+             accesskey="P">previous</a> |</li>
         <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -43,30 +50,22 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="using-percona-server-instead-of-mysql">
-<h1>Using Percona Server instead of MySQL<a class="headerlink" href="#using-percona-server-instead-of-mysql" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="http://www.percona.com/software/percona-server/">Percona Server</a> is a drop-in replacement for MySQL, more precisely, a
-modified MySQL Community Server.</p>
-<p>We prefer Percona Server because it provides us more statistics and
-faster schema changes. Without much benchmarking, I could say it’s a bit
-faster overall with InnoDB and it uses a bit less RAM, but it’s still
-MySQL at the core.</p>
-<p>In other words, there’s no good reason to keep using the official MySQL
-Community Server, so let’s install Percona Server.</p>
+  <div class="section" id="installing-percona-server-instead-of-mysql">
+<h1>Installing Percona Server instead of MySQL<a class="headerlink" href="#installing-percona-server-instead-of-mysql" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.percona.com/software/percona-server/">Percona Server</a> is a drop-in replacement for MySQL, more precisely, a modified MySQL Community Server.</p>
+<p>We prefer Percona Server because it provides us more statistics and faster schema changes. Without much benchmarking, I could say it’s a bit faster overall with InnoDB and it uses a bit less RAM, but it’s still MySQL at the core.</p>
+<p>In other words, there’s no good reason to keep using the official MySQL Community Server, so let’s install Percona Server.</p>
 <p>This article covers both installation or upgrade from MySQL to Percona.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>sudo if you aren’t running as root (and you shouldn’t!)
-<tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">sudo</span></tt></li>
+<li>sudo if you aren’t running as root (and you shouldn’t!) <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">sudo</span></tt></li>
 <li>wget <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">wget</span></tt></li>
 </ul>
 </div>
 <div class="section" id="get-percona-server-binaries">
 <h2>Get Percona Server binaries<a class="headerlink" href="#get-percona-server-binaries" title="Permalink to this headline">¶</a></h2>
-<p>Go to the <a href="#id1"><span class="problematic" id="id2">`Percona Server downloads page for the latest version`_</span></a>, go
-for <tt class="docutils literal"><span class="pre">binary</span> <span class="pre">»</span> <span class="pre">linux</span></tt> and choose <tt class="docutils literal"><span class="pre">x86_64</span></tt> if your OS is 64bit (I hope
-it is).</p>
+<p>Go to the <a class="reference external" href="http://www.percona.com/downloads/Percona-Server-5.5/LATEST/">Percona Server downloads page for the latest version</a>, go for <tt class="docutils literal"><span class="pre">binary</span> <span class="pre">»</span> <span class="pre">linux</span></tt> and choose <tt class="docutils literal"><span class="pre">x86_64</span></tt> if your OS is 64bit (I hope it is).</p>
 <p>Then, use your server to download it and extract it:</p>
 <div class="highlight-python"><pre>$ cd /opt
 $ wget http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.22-25.2/binary/linux/x86_64/Percona-Server-5.x.xx-relxx.x-xxx.Linux.xxxx.tar.gz
@@ -80,7 +79,7 @@ $ tar xvzf Percona-Server-5.x.xx-relxx.x-xxx.Linux.xxxx.tar.gz</pre>
 first databases. The process is identical to the one of installing
 MySQL, and in fact we won’t use “Percona” anywhere, to keep
 compatibility.</p>
-<p><em>This is partly copied from the `MySQL 5.5 binary installation guide`_</em>,
+<p>This is partly copied from the <a class="reference external" href="http://dev.mysql.com/doc/refman/5.5/en/binary-installation.html">MySQL 5.5 binary installation guide</a>,
 but we’ve made a few changes for your convenience. Don’t copy the hashes
 and what comes after them, those are only comments.</p>
 <div class="highlight-python"><pre>$ cd /opt
@@ -104,9 +103,8 @@ $ cp support-files/mysql.server /etc/init.d/mysql</pre>
 <div class="highlight-python"><pre>$ update-rc.d mysql defaults</pre>
 </div>
 <p>You should be done installing Percona Server.</p>
-</div>
 <div class="section" id="replacing-mysql-with-percona">
-<h2>Replacing MySQL with Percona<a class="headerlink" href="#replacing-mysql-with-percona" title="Permalink to this headline">¶</a></h2>
+<h3>Replacing MySQL with Percona<a class="headerlink" href="#replacing-mysql-with-percona" title="Permalink to this headline">¶</a></h3>
 <p>Stop MySQL. Should be a command like this</p>
 <div class="highlight-python"><pre>$ /etc/init.d/mysql stop # maybe /etc/init.d/mysql.server stop</pre>
 </div>
@@ -128,9 +126,7 @@ with the appropriate folders.</p>
 <div class="highlight-python"><pre>$ /etc/init.d/mysql start # maybe /etc/init.d/mysql.server start</pre>
 </div>
 <p>And this is it, you’re now using Percona Server.</p>
-<p>version: <a class="reference external" href="http://www.percona.com/downloads/Percona-Server-5.5/LATEST/">http://www.percona.com/downloads/Percona-Server-5.5/LATEST/</a>
-.. _MySQL 5.5 binary installation
-guide: <a class="reference external" href="http://dev.mysql.com/doc/refman/5.5/en/binary-installation.html">http://dev.mysql.com/doc/refman/5.5/en/binary-installation.html</a></p>
+</div>
 </div>
 </div>
 
@@ -142,15 +138,23 @@ guide: <a class="reference external" href="http://dev.mysql.com/doc/refman/5.5/e
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Using Percona Server instead of MySQL</a><ul>
+<li><a class="reference internal" href="#">Installing Percona Server instead of MySQL</a><ul>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#get-percona-server-binaries">Get Percona Server binaries</a></li>
-<li><a class="reference internal" href="#fresh-installation">Fresh installation</a></li>
+<li><a class="reference internal" href="#fresh-installation">Fresh installation</a><ul>
 <li><a class="reference internal" href="#replacing-mysql-with-percona">Replacing MySQL with Percona</a></li>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installing_the_minimal.html"
+                        title="previous chapter">Installing the minimal</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installing_php.html"
+                        title="next chapter">A good PHP compilation</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/server_install/installing_percona.txt"
@@ -179,6 +183,12 @@ guide: <a class="reference external" href="http://dev.mysql.com/doc/refman/5.5/e
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="installing_php.html" title="A good PHP compilation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installing_the_minimal.html" title="Installing the minimal"
+             >previous</a> |</li>
         <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,7 +9,7 @@
     
     <title>Troubleshooting installation &mdash; FoOlFuuka 0.8.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -25,7 +24,9 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" /> 
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" />
+    <link rel="next" title="From zero to FoOlFuuka" href="../server_install/index.html" />
+    <link rel="prev" title="How to install" href="how_to_install.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,6 +35,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../server_install/index.html" title="From zero to FoOlFuuka"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="how_to_install.html" title="How to install"
+             accesskey="P">previous</a> |</li>
         <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -45,30 +52,35 @@
             
   <div class="section" id="troubleshooting-installation">
 <h1>Troubleshooting installation<a class="headerlink" href="#troubleshooting-installation" title="Permalink to this headline">¶</a></h1>
-<p>There&#8217;s always a fairly high chance your server is misconfigured, and of course FoOlFuuka can fail.</p>
-<p>Here&#8217;s some suggestions and things to look over if you can&#8217;t get FoOlFuuka to install.</p>
-<p>__Taking that you&#8217;ve successfully extracted FoOlFuuka into your selected directory.__</p>
-<p>### The webserver is Nginx and I didn&#8217;t set it up</p>
-<p>Without setting up Nginx, your server won&#8217;t know what to do with FoOlFuuka&#8217;s URLs. Go to the [Nginx configuration](Nginx-configuration) page and follow the steps.</p>
-<p>### The webserver is Apache and maybe mod_rewrite is not enabled</p>
+<p>It is possible for your server to prevent FoOlFuuka to run. This page explains some common scenarios that we&#8217;ve solved before.</p>
+<p><strong>At this point of time you should already have FoOlFuuka extracted in a directory.</strong></p>
+<div class="section" id="the-webserver-is-nginx-and-i-didn-t-set-it-up">
+<h2>The webserver is Nginx and I didn&#8217;t set it up<a class="headerlink" href="#the-webserver-is-nginx-and-i-didn-t-set-it-up" title="Permalink to this headline">¶</a></h2>
+<p>Without setting up Nginx, your server won&#8217;t know what to do with FoOlFuuka&#8217;s URLs. Go to the <a class="reference internal" href="../server_install/configuring_nginx.html"><em>Nginx configuration</em></a> page and follow the steps.</p>
+</div>
+<div class="section" id="the-webserver-is-apache-and-maybe-mod-rewrite-is-not-enabled">
+<h2>The webserver is Apache and maybe mod_rewrite is not enabled<a class="headerlink" href="#the-webserver-is-apache-and-maybe-mod-rewrite-is-not-enabled" title="Permalink to this headline">¶</a></h2>
 <p>Without rewriting support, the webserver won&#8217;t know what to do with FoOlFuuka URLs (and most other web applications will have issues). Open the httpd.conf file:</p>
-<blockquote>
-<div>$ nano /etc/httpd/conf/httpd.conf # you can use your SFTP connection</div></blockquote>
-<p>With <cite>CTRL+W</cite> find the line saying <cite>AllowOverride</cite> and make sure it&#8217;s set on <cite>AllowOverride All</cite>.</p>
-<p><cite>CTRL+S</cite> to save and <cite>CTRL+X</cite> to exit nano.</p>
-<p>### Check the folder permissions</p>
+<div class="highlight-python"><pre>$ nano /etc/httpd/conf/httpd.conf # you can use your SFTP connection</pre>
+</div>
+<p>With <tt class="docutils literal"><span class="pre">CTRL+W</span></tt> find the line saying <tt class="docutils literal"><span class="pre">AllowOverride</span></tt> and make sure it&#8217;s set on <tt class="docutils literal"><span class="pre">AllowOverride</span> <span class="pre">All</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">CTRL+S`</span> <span class="pre">to</span> <span class="pre">save</span> <span class="pre">and</span> <span class="pre">``CTRL+X</span></tt> to exit nano.</p>
+</div>
+<div class="section" id="check-the-folder-permissions">
+<h2>Check the folder permissions<a class="headerlink" href="#check-the-folder-permissions" title="Permalink to this headline">¶</a></h2>
 <p>Hardly a problem, but FoOlFuuka likes owning its own files, cosidering it also autoupdates. Discover the name of the user your webserver is running as. If you don&#8217;t know, write this:</p>
-<blockquote>
-<div>$ cd /get/in/foolfuuka/directory
-$ echo &#8220;&lt;?php echo exec(&#8216;whoami&#8217;); ?&gt;&#8221; &gt; whoami.php</div></blockquote>
-<p>Then on your browser, reach <cite>http://yourdoma.in/foolfuuka/whoami.php</cite> and the output will be the name of the user running the webserver. Besides, if you created whoami.php, the file is better if it doesn&#8217;t stay there, so remove it.</p>
-<blockquote>
-<div>$ rm whoami.php</div></blockquote>
-<p>Now change the permissions accordingly. In example, if the user is the classic <cite>www-data</cite>:</p>
-<blockquote>
-<div>$ cd /get/in/foolfuuka/directory
-$ chown -R www-data .</div></blockquote>
+<div class="highlight-python"><pre>$ cd /get/in/foolfuuka/directory
+$ echo "&lt;?php echo exec('whoami'); ?&gt;" &gt; whoami.php</pre>
+</div>
+<p>Then on your browser, reach <tt class="docutils literal"><span class="pre">http://yourdoma.in/foolfuuka/whoami.php</span></tt> and the output will be the name of the user running the webserver. Besides, if you created whoami.php, the file is better if it doesn&#8217;t stay there, so remove it.</p>
+<div class="highlight-python"><pre>$ rm whoami.php</pre>
+</div>
+<p>Now change the permissions accordingly. In example, if the user is the classic <tt class="docutils literal"><span class="pre">www-data</span></tt>:</p>
+<div class="highlight-python"><pre>$ cd /get/in/foolfuuka/directory
+$ chown -R www-data .</pre>
+</div>
 <p>And permissions should be fixed.</p>
+</div>
 </div>
 
 
@@ -77,6 +89,22 @@ $ chown -R www-data .</div></blockquote>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Troubleshooting installation</a><ul>
+<li><a class="reference internal" href="#the-webserver-is-nginx-and-i-didn-t-set-it-up">The webserver is Nginx and I didn&#8217;t set it up</a></li>
+<li><a class="reference internal" href="#the-webserver-is-apache-and-maybe-mod-rewrite-is-not-enabled">The webserver is Apache and maybe mod_rewrite is not enabled</a></li>
+<li><a class="reference internal" href="#check-the-folder-permissions">Check the folder permissions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="how_to_install.html"
+                        title="previous chapter">How to install</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../server_install/index.html"
+                        title="next chapter">From zero to FoOlFuuka</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/install/troubleshooting.txt"
@@ -105,6 +133,12 @@ $ chown -R www-data .</div></blockquote>
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../server_install/index.html" title="From zero to FoOlFuuka"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="how_to_install.html" title="How to install"
+             >previous</a> |</li>
         <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,7 +9,7 @@
     
     <title>Configuring Nginx &mdash; FoOlFuuka 0.8.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -25,7 +24,9 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" /> 
+    <link rel="top" title="FoOlFuuka 0.8.0 documentation" href="../index.html" />
+    <link rel="next" title="Installing Java Virtual Machine" href="installing_java.html" />
+    <link rel="prev" title="Installing Nginx" href="installing_nginx.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,6 +35,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installing_java.html" title="Installing Java Virtual Machine"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installing_nginx.html" title="Installing Nginx"
+             accesskey="P">previous</a> |</li>
         <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -127,63 +134,94 @@ $ nano foolz.us</pre>
 be simple to read. Please, check all the comments to adapt to your
 installation.</p>
 <div class="highlight-python"><pre>server {
-    server_name archive.foolz.us # change this to your domain or subdomain
-    index index.php;
-    root /var/www/foolfuuka; # change it to the location of your FoOlFuuka
+        server_name archive.foolz.us # change this to your domain or subdomain
+        index index.php;
+        root /var/www/foolfuuka; # change it to the location of your FoOlFuuka
 
-    # tell the browser to cache all static files
-    # FoOlFuuka automatically deals with forcing redownload through query parameters like style.css?v=0.8.0
-    location ~* \.(css|js|htc|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$ {
-        expires 31536000s;
-        add_header Pragma "public";
-        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        try_files $uri $uri/ /index.php;
-    }
-
-    # most important part, this sends the requests to FoOlFuuka
-    location / {
-        try_files $uri $uri/ /index.php;
-    }
-
-    # connection to PHP
-    location ~ .php$ {
-        include /etc/nginx/fastcgi_params;
-        fastcgi_index index.php;
-        if (-f $request_filename) {
-            fastcgi_pass 127.0.0.1:9000;
-
-            # you can use the sockets (10%~ faster connection) if you setup PHP with a socket file
-            # fastcgi_pass unix:/dev/shm/php5-fpm.sock;
+        # tell the browser to cache all static files
+        # FoOlFuuka automatically deals with forcing redownload through query parameters like style.css?v=0.8.0
+        location ~* \.(css|js|htc|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$ {
+                expires 31536000s;
+                add_header Pragma "public";
+                add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+                try_files $uri $uri/ /index.php;
         }
-    }
+
+        # most important part, this sends the requests to FoOlFuuka
+        location / {
+                try_files $uri $uri/ /index.php;
+        }
+
+        # connection to PHP
+        location ~ .php$ {
+                include /etc/nginx/fastcgi_params;
+                fastcgi_index index.php;
+                if (-f $request_filename) {
+                        fastcgi_pass 127.0.0.1:9000;
+
+                        # you can use the sockets (10%~ faster connection) if you setup PHP with a socket file
+                        # fastcgi_pass unix:/dev/shm/php5-fpm.sock;
+                }
+        }
 }
 
 # optional
 # block all sub-domains not set above
 server {
-    listen 80;
-    server_name *.foolz.us;
+        listen 80;
+        server_name *.foolz.us;
 
-    location / {
-        return 403;
-    }
+        location / {
+                return 403;
+        }
 }</pre>
 </div>
-<p>And with this you have FoOlFuuka running from
-<tt class="docutils literal"><span class="pre">http://archive.foolz.us</span></tt>. Let’s say instead that you want FoOlFuuka
-in a subfolder, like <tt class="docutils literal"><span class="pre">http://foolz.us/foolfuuka</span></tt>. Here’s how to go
-with it:</p>
+<p>And with this you have FoOlFuuka running from <tt class="docutils literal"><span class="pre">http://archive.foolz.us</span></tt>. Let&#8217;s say instead that you want FoOlFuuka in a subfolder, like <tt class="docutils literal"><span class="pre">http://foolz.us/foolfuuka</span></tt>. Here&#8217;s how to go with it:</p>
 <div class="highlight-python"><pre>server {
-    server_name foolz.us # change this to a domain or subdomain
-    index index.php;
-    root /var/www/; # the root domain of your
+        server_name foolz.us # change this to a domain or subdomain
+        index index.php;
+        root /var/www/; # the root domain of your
 
-    # tell the browser to cache all static files
-    # FoOlFuuka automatically deals with forcing redownload through query parameters like style.css?v=0.8.0
-    location ~* \.(css|js|htc|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$ {
-        expires 3153</pre>
+        # tell the browser to cache all static files
+        # FoOlFuuka automatically deals with forcing redownload through query parameters like style.css?v=0.8.0
+        location ~* \.(css|js|htc|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$ {
+                expires 31536000s;
+                add_header Pragma "public";
+                add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+                try_files $uri $uri/ /index.php;
+        }
+
+        # allow reaching the base folder, without any special magic
+        # if you have index.php in the root folder it will be shown when http://foolz.us is reached
+        location / {}
+
+        # in case you have a Wordpress blog in /blog
+        location /blog {
+                try_files $uri $uri/ /blog/index.php;
+        }
+
+        # most important part, this sends the requests to FoOlFuuka
+        # in this case we add a folder to location and try_files
+        location /foolfuuka {
+                try_files $uri $uri/ /foolfuuka/index.php;
+        }
+
+        # connection to PHP
+        location ~ .php$ {
+                include /etc/nginx/fastcgi_params;
+                fastcgi_index index.php;
+                if (-f $request_filename) {
+                        fastcgi_pass 127.0.0.1:9000;
+
+                        # you can use the sockets (10%~ faster connection) if you setup PHP with a socket file
+                        # fastcgi_pass unix:/dev/shm/php5-fpm.sock;
+                }
+        }
+}</pre>
 </div>
-<p>TRUNCATED! Please download pandoc if you want to convert large files.</p>
+<p>Once you&#8217;re done, restart Nginx:</p>
+<div class="highlight-python"><pre>$ /etc/init.d/nginx restart</pre>
+</div>
 </div>
 </div>
 
@@ -202,6 +240,12 @@ with it:</p>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installing_nginx.html"
+                        title="previous chapter">Installing Nginx</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installing_java.html"
+                        title="next chapter">Installing Java Virtual Machine</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/server_install/configuring_nginx.txt"
@@ -230,6 +274,12 @@ with it:</p>
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="installing_java.html" title="Installing Java Virtual Machine"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installing_nginx.html" title="Installing Nginx"
+             >previous</a> |</li>
         <li><a href="../index.html">FoOlFuuka 0.8.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
