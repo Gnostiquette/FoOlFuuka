@@ -1,8 +1,7 @@
-===============================
 Installing Java Virtual Machine
-===============================
+###############################
 
-You need Java to run Asagi, and installing Java is really simple:
+You need Java to run Asagi, and installing Java is really simple: ::
 
     $ apt-get install openjdk-6-jre
 

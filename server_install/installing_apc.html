@@ -78,13 +78,13 @@ nearly no configuration.</p>
 <p>Find <tt class="docutils literal"><span class="pre">extension</span></tt> (<tt class="docutils literal"><span class="pre">CTRL+W</span></tt> to search) and after the block of
 commented-out extensions add:</p>
 <div class="highlight-python"><pre>extension=apc.so
-apc.shm_size = 256M # make this at least 64-128M, we use 512M for giggles</pre>
+apc.shm_size = 256M # make this at least 64-128M, 512M max</pre>
 </div>
 <p>Then, restart PHP, and you’re done:</p>
 <div class="highlight-python"><pre>$ /etc/init.d/php-fpm restart</pre>
 </div>
 <p>Now, you should be done with installing PHP, and getting the most out of
-it.</p>
+it. Go back to the <a class="reference internal" href="index.html"><em>From zero to FoOlFuuka index</em></a>.</p>
 </div>
 </div>
 

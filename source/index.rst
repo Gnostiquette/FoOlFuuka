@@ -24,7 +24,7 @@ Tutorials
 Guides
 ******
 
-:doc:`Editing the themes without messing up with child themes <develop/editing_themes>` (intermediate)
+:doc:`Editing the themes without messing up, with child themes <develop/editing_themes>` (intermediate)
 	Nearly everyone wants to make customization to the themes, at least to customize their index page. Child themes will plug you straight into the themes without having to create one from scratch.
 	
 	

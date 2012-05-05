@@ -72,9 +72,11 @@ savvy, just use your SFTP client.</p>
 <p>(<tt class="docutils literal"><span class="pre">CTRL+W</span></tt> to find words in <tt class="docutils literal"><span class="pre">nano</span></tt>, <tt class="docutils literal"><span class="pre">CTRL+O</span></tt> to save, <tt class="docutils literal"><span class="pre">CTRL+X</span></tt> to
 exit)</p>
 <p>Change the following (you can go higher than this for some values):</p>
-<div class="highlight-python"><pre>max_execution_time = 120
+<div class="highlight-python"><pre>max_post_size = 30M # or any upload you need to support
+max_upload_size = 30M # or any upload you need to support
+max_execution_time = 120
 memory_limit = 256M # 128M for a 512MB RAM server
-date.timezone = America/New_York # or wherever your server is from this list http://php.net/manual/en/timezones.php</pre>
+date.timezone = America/New_York # or wherever your server is from http://php.net/manual/en/timezones.php</pre>
 </div>
 <p>When you’re done (you can have fun looking at all the other variables)
 save and close the file. Now open the FPM configuration file, which is
@@ -101,7 +103,7 @@ server.</p>
 <div class="highlight-python"><pre>$ htop</pre>
 </div>
 <p>Press F5 to group the threads. Yes, PHP will have quite a few of them.</p>
-<p>Let’s give PHP the last blow of speed: <a class="reference external" href="Install-APC">Install APC</a>.</p>
+<p>Let’s give PHP the last blow of speed: <a class="reference internal" href="installing_apc.html"><em>Install APC</em></a>.</p>
 </div>
 </div>
 

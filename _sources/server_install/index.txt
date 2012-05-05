@@ -27,3 +27,11 @@ Installing Nginx
 :doc:`Installing Nginx </server_install/installing_nginx>`
 
 :doc:`Configuring Nginx </server_install/configuring_nginx>`
+
+Installing SphinxSearch (for large imageboards and archives)
+************************************************************
+
+Installing Java (for archives)
+******************************
+
+:doc:`Installing Java </server_install/installing_java>`

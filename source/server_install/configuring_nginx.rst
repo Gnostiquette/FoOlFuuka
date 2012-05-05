@@ -10,9 +10,7 @@ nginx.conf
 **********
 
 This is the file that gets loaded when Nginx starts. All other
-configuration files are loaded from this file via includes.
-
-::
+configuration files are loaded from this file via includes. ::
 
     user  www-data; # or whatever www user you have
     worker_processes  1; # 4 is good for big installations
